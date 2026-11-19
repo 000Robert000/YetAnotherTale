@@ -20,14 +20,18 @@ public class YetAnotherTaleGameOverUI extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         new Thread(() -> {
-            playAudio("src\\Sounds\\Game Over.wav");
+            playAudio("/Sounds/Game Over.wav");
         }).start();
     }
 
         private void playAudio(String filePath) {
         try {
-            File audioFile = new File(filePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            java.net.URL audioUrl = getClass().getResource(filePath);
+            if (audioUrl == null) {
+                System.err.println("Sound not found: " + filePath);
+                return;
+            }
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioUrl);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
             clip.start();

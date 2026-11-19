@@ -23,13 +23,17 @@ public class YetAnotherTaleStartUI extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         new Thread(() -> {
-            playAudio("src\\Sounds\\Start.wav");
+            playAudio("/Sounds/Start.wav");
         }).start();
     }
         private void playAudio(String filePath) {
         try {
-            File audioFile = new File(filePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            java.net.URL audioUrl = getClass().getResource(filePath);
+            if (audioUrl == null) {
+                System.err.println("Sound not found: " + filePath);
+                return;
+            }
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioUrl);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
             clip.start();
@@ -45,7 +49,6 @@ public class YetAnotherTaleStartUI extends javax.swing.JFrame {
 
    
 
-    Icon iconstart = new ImageIcon(getClass().getResource("/images/15714.gif"));
     
         
     
