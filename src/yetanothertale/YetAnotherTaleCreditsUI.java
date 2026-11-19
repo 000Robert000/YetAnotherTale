@@ -6,8 +6,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  *
@@ -22,27 +20,29 @@ public class YetAnotherTaleCreditsUI extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         new Thread(() -> {
-            playAudio("src\\Sounds\\End.wav");
+            playAudio("/Sounds/End.wav");
         }).start();
         Chara.setVisible(false);
         Soul.setVisible(false);
         Reset.setVisible(false);
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask(){
-            public void run(){
-                Chara.setVisible(true);
-                Soul.setVisible(true);
-                Reset.setVisible(true);
-                stopAudio();
-            }
-        };
-        timer.schedule(task, 5000);
+        javax.swing.Timer timer = new javax.swing.Timer(5000, e -> {
+            Chara.setVisible(true);
+            Soul.setVisible(true);
+            Reset.setVisible(true);
+            stopAudio();
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
         private void playAudio(String filePath) {
         try {
-            File audioFile = new File(filePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            java.net.URL audioUrl = getClass().getResource(filePath);
+            if (audioUrl == null) {
+                System.err.println("Sound not found: " + filePath);
+                return;
+            }
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioUrl);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
             clip.start();

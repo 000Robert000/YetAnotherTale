@@ -4,8 +4,6 @@
  */
 package yetanothertale;
 
-import java.util.Timer;
-import java.util.TimerTask;
 /**
  *
  * @author rober
@@ -18,14 +16,13 @@ public class YetAnotherTaleGameUI extends javax.swing.JFrame {
     public YetAnotherTaleGameUI() {
         initComponents();
         setLocationRelativeTo(null);
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask(){
-            public void run(){
-                YetAnotherTaleBattleUI f = new YetAnotherTaleBattleUI();
-                f.setVisible(true);
-            }
-        };
-        timer.schedule(task, 5434);
+        javax.swing.Timer timer = new javax.swing.Timer(5434, e -> {
+            YetAnotherTaleBattleUI f = new YetAnotherTaleBattleUI();
+            f.setVisible(true);
+            dispose();
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
             
     

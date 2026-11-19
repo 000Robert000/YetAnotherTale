@@ -30,7 +30,7 @@ public class YetAnotherTaleBattleUI extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         new Thread(() -> {
-            playAudio("src\\Sounds\\MEGALOVANIA.wav");
+            playAudio("/Sounds/MEGALOVANIA.wav");
         }).start();
         fight.setEnabled(false);
         act.setEnabled(false);
@@ -46,8 +46,12 @@ public class YetAnotherTaleBattleUI extends javax.swing.JFrame {
 
     private void playAudio(String filePath) {
         try {
-            File audioFile = new File(filePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            java.net.URL audioUrl = getClass().getResource(filePath);
+            if (audioUrl == null) {
+                System.err.println("Sound not found: " + filePath);
+                return;
+            }
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioUrl);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
             clip.start();
@@ -130,7 +134,6 @@ public class YetAnotherTaleBattleUI extends javax.swing.JFrame {
                 act.setEnabled(true);
                 item.setEnabled(true);
                 mercy.setEnabled(true);
-                timer.stop();
             }
         });
     disappearTimer.setRepeats(false);
@@ -464,7 +467,6 @@ public class YetAnotherTaleBattleUI extends javax.swing.JFrame {
                 act.setEnabled(true);
                 item.setEnabled(true);
                 mercy.setEnabled(true);
-                timer.stop();
             }
         });
     disappearTimer.setRepeats(false); 
